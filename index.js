@@ -2,6 +2,26 @@ const express = require('express')
 const app = express()
 const book = require("./routes/book");
 const courses = require("./routes/courses")
+const dotenv = require('dotenv');
+const mongoose = require("mongoose")
+
+dotenv.config();
+
+const mongoUrl = process.env.MONGODB_URI;
+
+mongoose.set('strictQuery', false);
+
+mongoose
+    .connect(mongoUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log("Database Connected Successfully");
+    })
+    .catch((err) => {
+        console.log("Database Not Connected Successfully : " + err);
+    });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
